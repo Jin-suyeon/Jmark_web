@@ -1,0 +1,135 @@
+.Bookmark_container {
+  padding: 20px;
+  width: 370px;
+}
+
+.Bookmark_container header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.Bookmark_container header h1 {
+  font-size: 20px;
+  color: #333;
+}
+
+.Bookmark_container header button {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background-color: #29c39d;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0px;
+}
+
+.Bookmark_container header button .btn_title {
+  margin-right: 10px;
+}
+
+.Bookmark_container header button .add_img {
+  height: 14px;
+  margin-top: 1px;
+}
+
+.Bookmark_container .keyword_search {
+  width: 100%;
+  height: 35px;
+  padding: 0 10px;
+  background-color: #f1f0f5;
+  border-radius: 3px;
+  border: none;
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #333;
+}
+
+.Bookmark_container .keyword_search:focus {
+  outline: none;
+}
+
+.Bookmark_container .keyword_search::placeholder {
+  font-weight: 600;
+  color: #a5a3b0;
+}
+
+.Bookmark_container .recent_keyword_wrap {
+  margin-bottom: 25px;
+}
+
+.Bookmark_container .recent_keyword_wrap h5 {
+  color: #a5a3b0;
+  margin-bottom: 7px;
+  font-size: 12px;
+}
+
+.Bookmark_container .recent_keyword_wrap .recent_keyword_list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Bookmark_container .recent_keyword_wrap .recent_keyword_list .keyword {
+  height: 25px;
+  font-size: 12px;
+  background-color: #f1f0f5;
+  border-radius: 20px;
+  line-height: 25px;
+  padding: 0 15px;
+  margin-right: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: #a5a3b0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.Bookmark_container .bookmark_btn_wrap {
+  margin-bottom: 10px;
+}
+
+.Bookmark_container .bookmark_btn_wrap h5 {
+  color: #a5a3b0;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.Bookmark_container .bookmark_btn_wrap .btn_wrap {
+  background-color: #f1f0f5;
+  padding: 5px;
+  border-radius: 50px;
+  display: inline-block;
+}
+
+.Bookmark_container .bookmark_btn_wrap .bookmark_btn {
+  height: 30px;
+  padding: 0 15px;
+  border-radius: 15px;
+  border: none;
+  color: #a5a3b0;
+  margin-right: 5px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.Bookmark_container .bookmark_btn_wrap .bookmark_btn:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.Bookmark_container .bookmark_btn_wrap button:last-child {
+  margin-right: 0;
+}
+
+.Bookmark_container .bookmark_btn_wrap .btn_active {
+  background-color: white;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  color: #29c39d;
+  transition: all 0.2s;
+}
