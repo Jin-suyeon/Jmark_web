@@ -2,7 +2,17 @@
   "name": "J-Mark",
   "description": "나만의 지식 책갈피 - 자동으로 정리하고 분류하는 검색 가능한 메모장",
   "version": "1.0",
+  "permissions": ["tabs"],
   "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
   "action": {
     "default_popup": "index.html",
     "default_title": "J-Mark"

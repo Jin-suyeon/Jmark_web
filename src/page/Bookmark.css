@@ -1,6 +1,7 @@
 .Bookmark_container {
-  padding: 20px;
+  padding-top: 20px;
   width: 370px;
+  border: 1px solid grey;
 }
 
 .Bookmark_container header {
@@ -9,6 +10,7 @@
   align-items: center;
   letter-spacing: 1px;
   margin-bottom: 15px;
+  padding: 0 20px;
 }
 
 .Bookmark_container header h1 {
@@ -39,6 +41,10 @@
   margin-top: 1px;
 }
 
+.Bookmark_container .input_wrap {
+  padding: 0 20px;
+}
+
 .Bookmark_container .keyword_search {
   width: 100%;
   height: 35px;
@@ -63,6 +69,7 @@
 
 .Bookmark_container .recent_keyword_wrap {
   margin-bottom: 25px;
+  padding: 0 20px;
 }
 
 .Bookmark_container .recent_keyword_wrap h5 {
@@ -93,6 +100,7 @@
 
 .Bookmark_container .bookmark_btn_wrap {
   margin-bottom: 10px;
+  padding: 0 20px;
 }
 
 .Bookmark_container .bookmark_btn_wrap h5 {

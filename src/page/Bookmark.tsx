@@ -1,14 +1,14 @@
 import "./Bookmark.css";
 import PLUS from "../assets/icon/plus.png";
-import { useState } from "react";
-import AddBookmark from "./AddBookmark";
+import { useEffect, useState } from "react";
 import BookmarkList from "../component/BookmarkList";
 
 type Props = {
   setAddBookmark: React.Dispatch<React.SetStateAction<boolean>>;
+  bodyData: string;
 };
 
-const Bookmark: React.FC<Props> = ({ setAddBookmark }) => {
+const Bookmark: React.FC<Props> = ({ setAddBookmark, bodyData }) => {
   const [bookmarkChange, setBookmarkChange] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -83,6 +83,24 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark }) => {
     },
   ];
 
+  useEffect(() => {
+    if (bookmarkChange) {
+      getPageBookmark();
+    } else {
+      getKeywordBookmark();
+    }
+  }, [bookmarkChange]);
+
+  const getKeywordBookmark = async () => {
+    //! 키워드 관련 북마크 가져오기
+    console.log("키워드 관련 북마크 가져오기");
+  };
+
+  const getPageBookmark = async () => {
+    //! 페이지 관련 북마크 가져오기
+    console.log("페이지 관련 북마크 가져오기");
+  };
+
   return (
     <div className="Bookmark_container">
       <header>
@@ -95,13 +113,15 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark }) => {
         </button>
       </header>
 
-      <input
-        className="keyword_search"
-        type="text"
-        placeholder="키워드를 입력해주세요"
-        onChange={(e) => setSearch(e.target.value)}
-        value={search}
-      />
+      <div className="input_wrap">
+        <input
+          className="keyword_search"
+          type="text"
+          placeholder="키워드를 입력해주세요"
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+        />
+      </div>
 
       <div className="recent_keyword_wrap">
         <h5>최근 검색 키워드</h5>
@@ -122,13 +142,13 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark }) => {
         <h5>북마크 리스트</h5>
         <div className="btn_wrap">
           <button
-            onClick={() => setBookmarkChange(!bookmarkChange)}
+            onClick={() => setBookmarkChange(false)}
             className={`bookmark_btn ${!bookmarkChange ? "btn_active" : ""}`}
           >
             키워드 검색 북마크
           </button>
           <button
-            onClick={() => setBookmarkChange(!bookmarkChange)}
+            onClick={() => setBookmarkChange(true)}
             className={`bookmark_btn ${bookmarkChange ? "btn_active" : ""}`}
           >
             페이지 연관 북마크
