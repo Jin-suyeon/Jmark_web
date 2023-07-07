@@ -2,110 +2,86 @@ import "./Bookmark.css";
 import PLUS from "../assets/icon/plus.png";
 import { useEffect, useState } from "react";
 import BookmarkList from "../component/BookmarkList";
+import axios from "axios";
+import { useAppDispatch } from "../feature";
+import { useSelector } from "react-redux";
+import {
+  getKeywordBookmarkAsync,
+  getKeywordsAsync,
+  getPageBookmarkAsync,
+  selectBodyData,
+  selectBookmarkType,
+  selectBookmarks,
+  selectKeyword,
+  selectLatestKeywords,
+  selectUrl,
+  setBookmarkType,
+  setUpsertBookmark,
+} from "../feature/bookmark";
+import { selectLoading } from "../feature/ui_loading";
 
-type Props = {
-  setAddBookmark: React.Dispatch<React.SetStateAction<boolean>>;
-  bodyData: string;
-};
+type Props = {};
 
-const Bookmark: React.FC<Props> = ({ setAddBookmark, bodyData }) => {
-  const [bookmarkChange, setBookmarkChange] = useState(false);
-  const [search, setSearch] = useState("");
+const Bookmark: React.FC<Props> = () => {
+  const dispatch = useAppDispatch();
 
-  const keywords = [
-    "react",
-    "javascript",
-    "typescript",
-    "nodejs",
-    "html",
-    "css",
-    "python",
-    "java",
-  ];
+  const latestKeywords = useSelector(selectLatestKeywords);
+  const url = useSelector(selectUrl);
+  const bodyData = useSelector(selectBodyData);
+  const bookmarkType = useSelector(selectBookmarkType);
+  const keyword = useSelector(selectKeyword);
+  const loading = useSelector(selectLoading);
 
-  const keywordBookmark = [
-    {
-      keywords: [
-        "react",
-        "javascriptjavascripjavascriptjavascripjavascriptjavascrip",
-        "typescript",
-        "nodejs",
-        "html",
-      ],
-      name: "react를 배우는 사람에게 필요한 정보들123123123123123123123123123123",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "react를 배우는 사람에게 필요한 정보들",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "react를 배우는 사람에게 필요한 정보들",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "react를 배우는 사람에게 필요한 정보들",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "react를 배우는 사람에게 필요한 정보들",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "react를 배우는 사람에게 필요한 정보들",
-    },
-  ];
-
-  const pageBookmark = [
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-    {
-      keywords: ["react", "javascript", "typescript", "nodejs", "html"],
-      name: "page에 연관된 정보들이 들어있는 북마크",
-    },
-  ];
+  const [search, setSearch] = useState(keyword);
 
   useEffect(() => {
-    if (bookmarkChange) {
+    getLastestKeywords();
+  }, []);
+
+  useEffect(() => {
+    if (bookmarkType === "page") {
       getPageBookmark();
-    } else {
+    } else if (bookmarkType === "keyword") {
       getKeywordBookmark();
     }
-  }, [bookmarkChange]);
+  }, [bookmarkType]);
 
-  const getKeywordBookmark = async () => {
-    //! 키워드 관련 북마크 가져오기
-    console.log("키워드 관련 북마크 가져오기");
+  const getLastestKeywords = () => {
+    dispatch(getKeywordsAsync.request({}));
   };
 
-  const getPageBookmark = async () => {
-    //! 페이지 관련 북마크 가져오기
-    console.log("페이지 관련 북마크 가져오기");
+  const getKeywordBookmark = (text?: string) => {
+    if (text) {
+      setSearch(text);
+
+      dispatch(getKeywordBookmarkAsync.request({ keywords: [text] }));
+    } else {
+      let arr: string[] = [];
+
+      if (search.length === 0) {
+        arr = [];
+      } else {
+        if (search.includes(",")) {
+          arr = search.replace(/\s/g, "").split(",");
+        } else {
+          arr = [search];
+        }
+      }
+
+      dispatch(getKeywordBookmarkAsync.request({ keywords: arr }));
+    }
+  };
+
+  const getPageBookmark = () => {
+    setSearch("");
+    dispatch(getPageBookmarkAsync.request({ url: url, text: bodyData }));
   };
 
   return (
     <div className="Bookmark_container">
       <header>
         <h1>J-MARK</h1>
-        <button onClick={() => setAddBookmark(true)}>
+        <button onClick={() => dispatch(setUpsertBookmark({ type: true }))}>
           <span className="btn_title">BOOKMARK</span>
           <span>
             <img className="add_img" src={PLUS} alt="add" />
@@ -119,6 +95,7 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark, bodyData }) => {
           type="text"
           placeholder="키워드를 입력해주세요"
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && getKeywordBookmark()}
           value={search}
         />
       </div>
@@ -126,13 +103,13 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark, bodyData }) => {
       <div className="recent_keyword_wrap">
         <h5>최근 검색 키워드</h5>
         <div className="recent_keyword_list">
-          {keywords.map((keyword) => (
+          {latestKeywords.slice(0, 6).map((keyword) => (
             <span
-              key={keyword}
+              key={keyword.id}
               className="keyword"
-              onClick={() => setSearch(keyword)}
+              onClick={() => getKeywordBookmark(keyword.keyword)}
             >
-              {keyword}
+              {keyword.keyword}
             </span>
           ))}
         </div>
@@ -142,24 +119,28 @@ const Bookmark: React.FC<Props> = ({ setAddBookmark, bodyData }) => {
         <h5>북마크 리스트</h5>
         <div className="btn_wrap">
           <button
-            onClick={() => setBookmarkChange(false)}
-            className={`bookmark_btn ${!bookmarkChange ? "btn_active" : ""}`}
+            onClick={() => dispatch(setBookmarkType({ type: "keyword" }))}
+            className={`bookmark_btn ${
+              bookmarkType === "keyword" ? "btn_active" : ""
+            }`}
+            disabled={loading}
           >
             키워드 검색 북마크
           </button>
           <button
-            onClick={() => setBookmarkChange(true)}
-            className={`bookmark_btn ${bookmarkChange ? "btn_active" : ""}`}
+            onClick={() => dispatch(setBookmarkType({ type: "page" }))}
+            className={`bookmark_btn ${
+              bookmarkType === "page" ? "btn_active" : ""
+            }`}
+            disabled={loading}
           >
             페이지 연관 북마크
           </button>
         </div>
       </div>
 
-      <div>
-        <BookmarkList
-          bookmarkData={bookmarkChange ? pageBookmark : keywordBookmark}
-        />
+      <div className={loading ? "bookmarkList_wrap" : ""}>
+        <BookmarkList />
       </div>
     </div>
   );

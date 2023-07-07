@@ -1,7 +1,6 @@
 .Bookmark_container {
   padding-top: 20px;
   width: 370px;
-  border: 1px solid grey;
 }
 
 .Bookmark_container header {
@@ -11,6 +10,12 @@
   letter-spacing: 1px;
   margin-bottom: 15px;
   padding: 0 20px;
+}
+
+.Bookmark_container .bookmarkList_wrap {
+  width: 100%;
+  height: 100px;
+  position: relative;
 }
 
 .Bookmark_container header h1 {

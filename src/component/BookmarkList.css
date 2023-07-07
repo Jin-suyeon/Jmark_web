@@ -3,6 +3,7 @@
   height: auto;
   color: #333;
   overflow-y: auto;
+  padding-bottom: 10px;
   /* -ms-overflow-style: none; 
   scrollbar-width: none;  */
 }
@@ -36,6 +37,17 @@
   margin: 0 20px;
 }
 
+.BookmarkList_container .none_bookmark {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 20px 0;
+  margin: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: #29c39d;
+}
+
 .BookmarkList_container .Bookmark_data:last-child {
   border-bottom: none;
 }
@@ -53,16 +65,48 @@
 }
 
 .BookmarkList_container .Bookmark_title_wrap .Bookmark_title {
-  width: 280px;
+  width: 210px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   word-break: break-all;
   cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #333;
 }
 
 .tooltip_wrap {
   position: relative;
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltip_wrap .title_btn_wraps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tooltip_wrap .title_btn_wraps .btn_wrap {
+  display: flex;
+}
+
+.tooltip_wrap .btn_wrap button {
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  margin: 0 2px;
+  color: #a5a3b0;
+  font-weight: 600;
+}
+
+.tooltip_wrap .btn_wrap button:hover {
+  color: #29c39d;
 }
 
 .tooltip {
@@ -101,5 +145,4 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   word-break: break-all;
-  cursor: pointer;
 }

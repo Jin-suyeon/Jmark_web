@@ -11,3 +11,8 @@ button {
 button:active {
   transform: scale(0.98);
 }
+
+.loading {
+  transform: scale(1) !important;
+  cursor: wait !important;
+}
