@@ -1,46 +1,64 @@
-# Getting Started with Create React App
+# J-Mark
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+나만의 지식 책갈피 — 현재 탐색 중인 페이지를 자동으로 분석하여 관련 북마크를 추천하고, 키워드로 빠르게 검색할 수 있는 Chrome 확장 프로그램입니다.
 
-## Available Scripts
+## 주요 기능
 
-In the project directory, you can run:
+### 페이지 데이터 자동 추출
+팝업이 열리는 순간 현재 활성 탭에서 4가지 데이터를 순차적으로 자동 수집합니다.
 
-### `npm start`
+- URL
+- 페이지 타이틀
+- `<meta name="description">` 값
+- 본문 텍스트 (최대 900자)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Content Script → Background Service Worker → Popup(Redux Store) 순서로 메시지 패싱을 통해 전달됩니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 북마크 저장
+수집된 페이지 데이터(title + description + 본문 텍스트)를 중복 제거 후 서버에 전송하여 북마크를 저장합니다. 북마크 이름은 수동으로 수정할 수 있습니다.
 
-### `npm test`
+### 키워드 기반 북마크 검색
+- 단일 키워드 또는 쉼표로 구분된 다중 키워드로 검색 가능
+- 최근 검색 키워드 6개 표시 및 재사용 가능
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 페이지 맥락 기반 북마크 추천
+현재 페이지의 URL과 본문 텍스트를 서버에 전달하여 관련도 높은 북마크를 추천받는 기능입니다.
 
-### `npm run build`
+## 기술 스택
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| 분류 | 기술 |
+|---|---|
+| Frontend | React 18, TypeScript |
+| 상태 관리 | Redux, Redux-Saga, typesafe-actions |
+| HTTP | Axios |
+| Extension | Chrome Extension Manifest V3 |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 아키텍처
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+Popup (React)
+  ├── Content Script (content.js)   # 페이지 DOM에서 데이터 추출
+  ├── Service Worker (background.js) # 추출 데이터 임시 저장 및 전달
+  └── Redux Store                    # 전역 상태 관리
+```
 
-### `npm run eject`
+**통신 흐름:**
+```
+Popup → chrome.tabs.sendMessage(tabId) → Content Script
+Content Script → chrome.runtime.sendMessage → Service Worker (저장)
+Popup → chrome.runtime.sendMessage → Service Worker (회수) → Redux Store
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 설치 및 실행
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 빌드
+```bash
+npm install
+npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Chrome 확장 프로그램 로드
+1. Chrome 주소창에 `chrome://extensions` 입력
+2. 우측 상단 **개발자 모드** 활성화
+3. **압축해제된 확장 프로그램을 로드합니다** 클릭
+4. `build` 폴더 선택
